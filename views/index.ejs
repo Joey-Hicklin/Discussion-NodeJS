@@ -3,9 +3,24 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/jquery.color-animation/1/mainfile"></script>
   </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+  <body></body>
+
+  <div id="archiveNav">
+    <div class="archiveButton archiveButtonLeft">&#8636;</div>
+    <div class="archiveTitle">ARCHIVES</div>
+    <div class="archiveButton archiveButtonRight">&#8641;</div>
+  </div><!--END OF archiveNav DIV-->
+
+  <div class="mainTopicFront">
+    <%= mainTopic %>
+  </div>
+  <a class="previousDiscussions simpleLink" href="#">Previous Discussions</a>
+  <div class="mainRespondButton mainButton">RESPOND</div>
+  <a class="viewButton mainButton" href="view.php">VIEW</div>
+
   </body>
 </html>
