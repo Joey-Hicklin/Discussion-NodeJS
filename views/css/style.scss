@@ -1,0 +1,1261 @@
+$lGrey: #b2b2b2;
+$dGrey: #8c8c8c;
+$green: #6ad060;
+$blue: #235af9;
+$red: #c93e3c;
+$noRateG: #989898;
+$noRateB: #8e8e8e;
+$noRateR: #828282;
+$background: #e9e9e9;
+
+/////////////////////////   NOTES   ////////////////////
+
+//     All blackouts are z-index 2
+//     Center viewTopicBox with Javascript
+//     Replace closeButton in viewTopic with upper-right circle icon
+//     Repeat close icon for all blackout boxes
+//     Add logic to timers style, showing ready buttons.  The mainTopicTimer becomes a button to the VIEW/RESPOND page of the Main Topic
+//     On respond page, use javascript to generate new statement textareas and center thier focus initially, while moving them downward as the screen fills up with more areas.
+//     Grammarly changes the font size to a set amount. Make font-sizes affected !important
+//     Grammarly glitches text areas on resize. They size they use is based upon Javascript, which executes on page resize. However, using VW would circumvent this.
+//     Add class of .animation to animated items. Then use javascript to delete class, should a user select it in their preferences. This will help achieve a lower page-size.
+//     Add "Showing The" <select><option>(first or last)</> <select> <option>(statementNum)</> \n "Statement(s) in each post" to sidebarSelect menu
+//     Add triangle arrows to bottom of sidebar menu for result pages. Replace with a "DISPLAY" button, should any options be changed. Also add "REVERT" button for returning the search selectors to their last executed state.
+//     Create hover states for all uneditable text so pointer is arrow, and not text icon.
+
+body{
+	display: none;
+	box-sizing: border-box;
+	margin: 0;
+	background-color: $background;
+}
+
+/////////////////   TOOLBAR   ////////////////////////////////////
+
+#toolbar{
+	position: fixed;
+	z-index: 3;
+	width: 100%;
+	height: 3.8vw;
+	background-color: $lGrey;
+
+	.tls{
+		display: inline-block;
+		font-size: 2vw;
+		background-color: $green;
+		border: 0.1vw solid black;
+		border-radius: 0.7vw;
+		padding: 0.3vw 1vw;
+		margin: 0vw 0.4vw;
+	}
+	.tls:hover{
+		cursor: pointer;
+	}
+	.toolbarLogin{
+		background-color: $dGrey;
+		position: relative;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+	.toolbarSignUp{
+		position: relative;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+	.timer{
+		position: relative;
+		display: inline-block;
+		vertical-align: top;
+		margin: 0vw 0.4vw;
+		padding: 0.3vw 1vw;
+		background-color: black;
+		border: 0.1vw solid white;
+		border-radius: 0.7vw;
+		color: rgba(255,0,0,1);
+		font-family: Orbitron, sans-serif;
+		font-size: 1.5vw;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+	.timer:hover{
+		cursor: context-menu;
+	}
+	.mainTopicTimer{
+		margin-left: 1vw;
+		width: 7.7vw;
+	}
+	.postTimer{
+		width: 5.4vw;
+	}
+	.postTimerReady{
+		background-color: $green;
+		color: black!important;
+		border: 0.1vw solid black!important;
+		width: 5vw;
+	}
+	.postTimerReady:hover{
+		cursor: context-menu;
+	}
+	.rateTimer{
+		width: 5.4vw;
+	}
+	#mainLayer{
+		display: none;
+		vertical-align: top;
+		font-size: 2.3vw;
+		color: black;
+		text-decoration: none;
+		background-color: $dGrey;
+		border: 0.1vw solid white;
+		padding: 0.5vw 0.7vw;
+	}
+	#mainLayer:hover{
+		cursor: pointer;
+	}
+	.layerBox{
+		display: inline-block;
+		vertical-align: top;
+		margin: 0.3vw 0vw;
+		width: 55vw;
+
+		.layerButton{
+			display: inline-block;
+			background-color: $green;
+			border: 0.1vw solid black;
+			border-radius: 0.5vw;
+			font-size: 2vw;
+			padding: 0.3vw 1vw;
+			margin-left: 0.4vw;
+
+			.layerID, .layerContent, .layerType{
+				display: none;
+			}
+		}
+		.layerButton:hover{
+			cursor: pointer;
+		}
+		.originalLayer{
+			display: none;
+		}
+	}
+	.optionsToolbar{
+		position: fixed;
+		top: 0.5vw;
+		right: 1vw;
+		padding: 0.3vw 1vw;
+		display: inline-block;
+		font-size: 1.5vw;
+		text-decoration: none;
+		color: white;
+		background-color: $dGrey;
+		border: 0.2vw solid white;
+		border-radius: 0.7vw;
+	}
+}
+
+////////////////////////////   LOOSE BLACKOUTS   ///////////////////
+
+.layerBlackout{
+	display: none;
+	position: fixed;
+	z-index: 2;
+	height: 100vh;
+	width: 100vw;
+	background-color: rgba(#000,0.9);
+
+	.layerBox{
+		position: relative;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		background-color:white;
+		border: 0.2vw solid $dGrey;
+		border-radius: 0.5vw;
+		max-width: 90vw;
+		max-height: 70vh;
+
+		.layerContent{
+			font-size: 2vw;
+			padding: 0.5vw 2vw;
+			overflow: auto;
+			max-height: 53vh;
+		}
+		.layerNavBox{
+			text-align: center;
+			padding: 1vw 0vw;
+
+			.layerNavButton{
+				text-align: center;
+				font-size: 3vw;
+				background-color: $dGrey;
+				border: 0.2vw solid black;
+				display: inline-block;
+			}
+			.layerNavButton:hover{
+				cursor: pointer;
+			}
+			.layerNavPrev{
+
+				span{
+					display: block;
+					transform: scaleX(0.5) rotate(-90deg);
+				}
+			}
+			.layerNavGo{
+				padding: 0.5vw 1vw;
+				margin: 0vw 5vw;
+			}
+			.layerNavNext{
+
+				span{
+					display: block;
+					transform: scaleX(0.5) rotate(90deg);
+				}
+			}
+		}
+	}
+}
+
+////////////////////////////   OPTIONS   ////////////////////////
+
+.blackout{
+	display: none;
+	position: fixed;
+	z-index: 2;
+	height: 100vh;
+	width: 100vw;
+	background-color: rgba(#000,0.9);
+}
+
+.signError{
+	position: relative;
+	top: -1vw;
+	font-size: 1.2vw;
+	text-align: center;
+	color: red;
+	max-width: 24vw;
+}
+
+.optionBlackout{
+	display: none;
+	position: fixed;
+	z-index: 2;
+	height: 100vh;
+	width: 100vw;
+	background-color: rgba(#000,0.9);
+
+	.optionBox{
+		position: fixed;
+		background-color: white;
+		border: 0.5vw solid $dGrey;
+		border-radius: 0.5vw;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+
+		.optionButton{
+			text-align: center;
+			font-size: 4vw;
+			border: 0.3vw solid black;
+			border-radius: 0.5vw;
+			padding: 0.3vw 1vw;
+			margin: 2vw 3vw;
+
+		}
+		.optionButton:hover{
+			cursor: pointer;
+		}
+		.signUpButton{
+			background-color: $green;
+		}
+		.logInButton{
+			background-color: $dGrey;
+		}
+		.logOutButton{
+			background-color: $red;
+		}
+		.optionButton:last-child{
+			margin-bottom: 4vw;
+
+		}
+	}
+}
+
+//////////////////////////   LOGIN   //////////////////////////
+
+.loginBlackout{
+	display: none;
+	position: fixed;
+	z-index: 2;
+	height: 100vh;
+	width: 100vw;
+	background-color: rgba(#000,0.9);
+
+	.loginBox{
+		position: absolute;
+		background-color: white;
+		border: 0.3vw solid black;
+		border-radius: 0.5vw;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+
+		input{
+			font-size: 3vw;
+			margin: 2vw 3vw;
+			border: none;
+			border-bottom: 0.2vw solid black;
+			border-radius: 0.2vw;
+
+		}
+		input:focus{
+			border: 0.2vw solid $blue;
+		}
+		.passwordBox{
+
+			.loginForget{
+				position: relative;
+				top: -1.5vw;
+				left: 4vw;
+				font-size: 1.5vw;
+				color: black;
+				text-decoration: none;
+			}
+			.loginForget:hover{
+				cursor: pointer;
+				color: blue;
+			}
+		}
+		#loginSubmit{
+			position: relative;
+			left: 50%;
+			margin-left: 0;
+			transform: translateX(-50%);
+			background-color: $green;
+			font-size: 2vw;
+			border: 0.2vw solid black;
+			width: 7vw;
+			text-align: center;
+			padding: 0.5vw;
+			margin-bottom: 1vw;
+
+		}
+		#loginSubmit:hover{
+			cursor: pointer;
+		}
+	}
+}
+
+////////////////////   ARCHIVES   ////////////////////////////////
+
+#archiveNav{
+	display: none;
+	position: relative;
+	top: 6vw;
+	left: 26%;
+	width: 51vw;
+	
+
+	.archiveButton{
+		position: relative;
+		display: inline-block;
+		font-size: 5vw;
+		font-weight: bold;
+		background-color: $dGrey;
+		border: 0.2vw solid black;
+		border-radius: 0.7vw;
+		padding: 0 1vw;
+	}
+	.archiveButton:hover{
+		cursor: pointer;
+	}
+	.archiveButtonLeft{
+	}
+	.archiveButtonRight{
+	}
+	.archiveTitle{
+		position: relative;
+		display: inline-block;
+		background-color: black;
+		font-size: 5vw;
+		text-align: center;
+		color: red;
+		border: 0.5vw solid $dGrey;
+		border-radius: 1vw;
+		width: 35vw;
+	}
+}
+
+/////////////////////////   MAIN TOPIC PAGE   ////////////////////////
+
+.mainTopicFront{
+	background-color: white;
+	border: 0.3vw solid black;
+	border-radius: 1vw;
+	font-size: 5vw;
+	text-align: center;
+	padding: 2vw 0vw;
+	position: relative;
+	max-width: 80%;
+	top: 8vw;
+	left: 50%;
+	transform: translate(-50%);
+}
+.simpleLink{
+	display: inline-block;
+}
+.simpleLink:visited{
+	color: black;
+}
+.simpleLink:hover{
+	color: blue;
+	cursor: pointer;
+}
+.previousDiscussions{
+	position: relative;
+	top: 4.5vw;
+	left: 50%;
+	transform: translate(-50%);
+	font-size: 1.5vw;
+}
+.mainButton{
+	display: inline-block;
+	position: relative;
+	font-size: 5vw;
+	text-align: center;
+	border: 0.2vw solid black;
+	border-radius: 0.8vw;
+	padding: 1vw 0vw;
+	width: 30vw;
+	top: 15vw;
+	left: 0.7vw;
+}
+.mainButton:hover{
+	cursor: pointer;
+}
+.mainRespondButton{
+	background-color: $green;
+	margin-right: 11.4vw;
+}
+.viewButton{
+	color: black;
+	background-color: $blue;
+	text-decoration: none;
+}
+.viewButton:visited{
+	color: black;
+}
+
+///////////////////////   RESPOND BOX   ///////////////////////////
+
+.respondBlackout{
+	display: none;
+	position: fixed;
+	z-index: 2;
+	height: 100vh;
+	width: 100vw;
+	background-color: rgba(#000,0.9);
+
+	.respondTopicBox{
+		position: fixed;
+		text-align: center;
+		background-color: white;
+		border: 0.3vw solid $dGrey;
+		border-radius: 0.5vw;
+		padding: 2vw 1vw;
+		top: 50%;
+		left: 30%;
+		max-width: 50vw;
+		transform: translate(-50%, -50%);
+
+		.respondTopic{
+			font-size: 7vw;
+			overflow: auto;
+			word-wrap: break-word;
+			max-height: 30vw;
+
+		}
+	}
+
+	.respondBox{
+		position: fixed;
+		text-align: center;
+		background-color: white;
+		border: 0.3vw solid $dGrey;
+		border-radius: 0.5vw;
+		padding: 0.3vw 1vw 2vw 1vw;
+		top: 50%;
+		left: 80%;
+		transform: translate(-50%, -50%);
+
+		span{
+			font-size: 3vw;
+			margin-top: 1vw;
+
+		}
+		.respondInButton{
+			text-align: center;
+			font-size: 3vw;
+			border: 0.3vw solid black;
+			border-radius: 0.5vw;
+			padding: 1vw;
+			margin: 1vw;
+			width: 28vw;
+
+			.viewNum{
+				display: none;
+				position: relative;
+				background-color: white;
+				border: 0.2vw solid black;
+				border-radius: 30%;
+				font-size: 2vw;
+				margin-right: 1vw;
+				padding: 0.3vw;
+				top: 0.2vw;
+				vertical-align: top;
+
+			}
+			.threeButtonText{
+				display: inline-block;
+				vertical-align: top;
+			}
+			span{
+				display: inline-block;
+				margin-top: none;
+			}
+		}
+		.respondInButton:hover{
+			cursor: pointer;
+		}
+		.agreeButton{
+			background-color: $green;
+
+		}
+		.neutralButton{
+			background-color: $blue;
+			
+		}
+		.disagreeButton{
+			background-color: $red;
+			
+		}
+		.greyButton{
+			background-color: $lGrey;
+			color: $dGrey;
+			border: 0.3vw solid $dGrey;
+		}
+	}	
+}
+
+/////////////////////////   RESPOND PAGE   //////////////////////////
+
+.respondSubjectBox{
+	position: fixed;
+	z-index: 1;
+	top: 3.5vw;
+	background-color: $background;
+	padding: 1vw;
+	padding-left: 5vw;
+	margin-left: 5vw;
+	border-bottom-right-radius: 0.5vw;
+
+	.respondSubjectButton{
+		display: inline-block;
+		background-color: $lGrey;
+		border: 0.2vw solid black;
+		border-radius: 0.5vw;
+		font-size: 3vw;
+		padding: 0.5vw 1.5vw;
+
+	}
+	.respondSubjectButton:hover{
+		cursor: pointer;
+	}
+	span{
+		font-size: 4vw;
+		margin-left: 5vw;
+
+	}
+}
+.postFormBox{
+	position: relative;
+	top: 11vw;
+	left: 10vw;
+	width: 80vw;
+
+	.statementInputBox{
+			margin-bottom: 3vw;
+			text-align: center;
+
+		.statementInput{
+			display: block;
+			resize: none;
+			width: 100%;
+			border: 0.2vw solid black;
+			font-size: 1.5vw !important;
+			padding: 0.5vw 1.5vw;
+
+		}
+		.statementInput:focus{
+			border: 0.2vw solid blue;
+		}
+		.newStatement{
+			margin-top: 0.5vw;
+			// text-decoration: none;
+			font-size: 1.5vw;
+		}
+	}
+	.reviewPostButton{
+		position: relative;
+		font-size: 3vw;
+		font-family: serif;
+		background-color: $green;
+		border: 0.3vw solid black;
+		border-radius: 0.3vw;
+		left: 50%;
+		transform: translateX(-50%);
+		padding: 0.5vw 1.5vw;
+		margin-bottom: 8vw;
+	}
+	.reviewPostButton:hover{
+		cursor: pointer;
+	}
+}
+
+////////////////////   VIEW TOPIC   ///////////////////////////////
+
+.viewTopicBlackout{
+	display: none;
+	position: fixed;
+	z-index: 2;
+	height: 100vh;
+	width: 100vw;
+	background-color: rgba(#000,0.9);
+
+	.viewTopicBox{
+		position: absolute;
+		background-color: white;
+		border: 0.3vw solid $dGrey;
+		border-radius: 0.3vw;
+		max-width: 90vw;
+		max-height: 70vh;
+		padding: 0.5vw 1.5vw;
+		padding-bottom: 1vw;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+
+		.viewTopic, .reviewContent{
+			font-size: 2vw;
+			max-height: 60vh;
+			overflow-Y: auto;
+
+		}
+		.submitPost{
+			display: none;
+			font-size: 2vw;
+			position: relative;
+			background-color: $green;
+			border: 0.2vw solid black;
+			border-radius: 0.5vw;
+			padding: 0.2vw 1.5vw;
+			margin-top: 1.5vw;
+			left: 50%;
+			transform: translateX(-50%);
+
+		}
+		.submitPost:hover{
+			cursor: pointer;
+		}
+		
+	}
+}
+
+//////////////////////////   POST   /////////////////////////////////////////
+
+.post{
+	position: relative;
+	background-color: $lGrey;
+	width: 80vw;
+	left: 58%;
+	transform: translateX(-50%);
+	padding: 0.7vw;
+	border-radius: 0.6vw;
+	top: 6vw;
+	margin-bottom: 4vw;
+
+	.postID{
+		display: none;
+	}
+	.statement{
+		border-bottom: 0.8vw solid white;
+
+		.statementID{
+			display: none;
+		}
+		.statementRatingSpace{
+			display: inline-block;
+			vertical-align: top;
+			font-size: 0;
+			width: 1%;
+
+		}
+		.statementContentBox{
+			position: relative;
+			display: inline-block;
+			vertical-align: top;
+			font-size: 0;
+			width: 99%;
+
+			.statementRatingBox{
+				position: absolute;
+				left: -0.8vw;
+				width: 1%;
+				height: 100%;
+
+				.statementRating{
+					width: 100%;
+
+				}
+				.statementRating:nth-child(1){
+					background-color: $green;
+				}
+				.statementRating:nth-child(2){
+					background-color: $blue;
+				}
+				.statementRating:nth-child(3){
+					background-color: $red;
+				}
+			}
+			.noRating{
+				.statementRating:nth-child(1){
+					height: 33.3%;
+					background-color: $noRateG;
+				}
+				.statementRating:nth-child(2){
+					height: 33.3%;
+					background-color: $noRateB;
+				}
+				.statementRating:nth-child(3){
+					height: 33.3%;
+					background-color: $noRateR;
+				}
+			}
+
+			.statementContent{
+				font-size: 1.7vw;
+				border-right: 0.2vw solid black;
+				background-color: white;
+				padding: 0.5vw 1vw;
+				word-wrap: break-word;
+
+				span{
+					// vertical-align: middle;
+				}
+
+			}
+			.statementBlackout{
+				display: none;
+				position: absolute;
+				background-color: rgba(#000,0.1);
+				height: 100%;
+				width: 100%;
+				top: 0;
+				left: 0;
+				z-index: 2;
+
+				.statementButton{
+					position: absolute;
+					font-size: 2vw;
+					background-color: $dGrey;
+					border: 0.1vw solid white;
+					border-radius: 0.8vw;
+					padding: 0.3vw 1vw;
+				}
+				.statementButton:hover{
+					cursor: pointer;
+				}
+				.statementRateButton{
+					top: 50%;
+					left: 15%;
+					transform: translate(-50%, -50%);
+				}
+				.statementViewButton{
+					top: 50%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+
+					.statementResponseNum{
+						display: inline-block;
+						vertical-align: top;
+						font-size: 1.5vw;
+						background-color: $red;
+						color: white;
+						border: 0.1vw solid black;
+						border-radius: 100%;
+						padding: 0 0.6vw;
+						margin-top: 0.194vw;
+
+					}
+				}
+				.statementRespondButton{
+					top: 50%;
+					left: 85%;
+					transform: translate(-50%, -50%);
+
+				}
+			}
+		}
+		.statementContentBox:hover{
+
+			.statementBlackout{
+				display: block;
+			}
+			.statementContent{
+				-webkit-filter: blur(1.5px);
+			}
+		}
+	}
+	.postButton{
+		display: none;
+		position: relative;
+		vertical-align: bottom;
+		font-size: 3vw;
+		background-color: $dGrey;
+		border: 0.1vw solid black;
+		border-radius: 0.8vw;
+		padding: 0vw 1.5vw;
+		margin-top: 0.7vw;
+		margin-left: 3vw;
+
+	}
+	.postButton:hover{
+		cursor: pointer;
+	}
+	.postRateButton{
+
+	}
+	.postViewButton{
+
+		.postResponseNum{
+			display: inline-block;
+			background-color: $red;
+			font-size: 2vw;
+			vertical-align: top;
+			margin-top: 0.5vw;
+			color: white;
+			border: 0.1vw solid black;
+			border-radius: 100%;
+			padding: 0 0.7vw;
+
+		}
+	}
+	.postRespondButton{
+
+	}
+	.postRatingBox{
+		display: inline-block;
+		position: relative;
+		width: 30%;
+		height: 2.6vw;
+		left: 15%;
+		transform: translateX(-50%);
+
+		.postRating{
+			font-size: 0;
+			display: inline-block;
+			margin: 0;
+			height: 100%;
+
+		}
+		.postRating:nth-child(1){
+			background-color: $green;
+			width: 33.3%;
+		}
+		.postRating:nth-child(2){
+			background-color: $blue;
+			width: 33.3%;
+		}
+		.postRating:nth-child(3){
+			background-color: $red;
+			width: 33.3%;
+		}
+	}
+	.noRating{
+		.postRating:nth-child(3){
+			width: 33.3%;
+			background-color: $noRateG;
+		}
+		.postRating:nth-child(2){
+			width: 33.3%;
+			background-color: $noRateB;
+		}
+		.postRating:nth-child(1){
+			width: 33.3%;
+			background-color: $noRateR;
+		}
+	}
+	.postReadMore{
+		position: absolute;
+		text-align: center;
+		font-size: 3vw;
+		background-color: $dGrey;
+		border: 0.1vw solid black;
+		width: 30%;
+		padding: 0vw 3.2vw;
+		left: 50%;
+		transform: translateX(-50%);
+		bottom: 0;
+	}
+	.postReadMore:hover{
+		cursor: pointer;
+	}
+}
+// .post:first-child{
+// 	top: 6vw;
+// }
+
+//////////////////////////////////   VIEW SIDEBAR   /////////////////////////
+
+.inactive{
+	// left:-15.1vw;
+}
+.sidebarBox{
+	position: fixed;
+	background-color: white;
+	border-right: 0.1vw solid black;
+	height: 100vh;
+	width: 15vw;
+	z-index: 1;
+
+	.sidebarTab{
+		position: absolute;
+		transform: translateY(-50%);
+		top: 50%;
+		right: -2.5vw;  //////////////  -3vw on slideIn
+		background-color: $dGrey;
+		border: 0.2vw solid black;
+		border-radius: 0.5vw;
+		z-index: -1;
+
+		.sidebarTabArrow{
+			transform: rotate(-90deg) scaleY(0.5); /////  rotate 90deg on slideIn
+			font-size: 3vw;
+
+		}
+	}
+	.sidebarTab:hover{
+		cursor: pointer;
+	}
+	.sidebarTopicBox{
+		background-color: white;
+		margin-top: 4.3vw;
+		border-bottom: 0.2vw solid black;
+
+		.sidebarTopicMain{
+			// display: none;
+			font-size: 2.2vw;
+			text-align: center;
+			padding-bottom: 0.5vw;
+
+		}
+		.sidebarTopicView{
+			display: none;
+			position: relative;
+			background-color: $dGrey;
+			font-size: 2.8vw;
+			text-align: center;
+			border: 0.3vw solid black;
+			border-radius: 0.5vw;
+			padding: 0.5vw 0vw;
+			margin: 1vw 1vw;
+
+		}
+		.sidebarTopicView:hover{
+			cursor: pointer;
+		}
+	}
+	.sidebarReturnBox{
+		display: none;
+		background-color: white;
+		padding: 8vw 1vw;
+
+		.sidebarReturnButton{
+			padding: 0.5vw 1vw;
+			text-align: center;
+			font-size: 1.8vw;
+			background-color: $dGrey;
+			border: 0.2vw solid black;
+			border-radius: 0.5vw;
+
+		}
+		.sidebarReturnButton:hover{
+			cursor: pointer;
+		}
+	}
+	.sidebarViewBox{
+		// display: none;
+		background-color: white;
+		border-bottom: 0.2vw solid black;
+		padding: 1vw 0vw;
+		text-align: center;
+
+		.sidebarViewType{
+			margin-bottom: 0.5vw;
+
+			span{
+				font-size: 1.3vw;
+			}
+			select{
+				font-size: 1vw;
+				min-width: 8vw;
+
+				option{
+
+				}
+			}
+		}
+		.sidebarViewIn{
+
+			span{
+			font-size: 1.3vw;
+
+			}
+			select{
+				font-size: 1vw;
+				min-width: 8vw;
+
+				option{
+
+				}
+			}
+		}
+	}
+	.sidebarSortBox{
+		// display: none;
+		background-color: white;
+		border-bottom: 0.2vw solid black;
+		text-align: center;
+		padding: 1vw 0vw;
+
+		span{
+			display: block;
+			font-size: 1.3vw;
+
+		}
+		select{
+			font-size: 1vw;
+			min-width: 8vw;
+			margin-top: 0.5vw;
+
+			option{
+
+			}
+		}
+	}
+	.sidebarDisplayBox{
+		// display: none;
+		background-color: white;
+		border-bottom: 0.2vw solid black;
+		padding: 1vw 0vw;
+		text-align: center;
+
+		span{
+			font-size: 1.3vw;
+			display: block;
+
+		}
+		select{
+			font-size: 1vw;
+			margin-top: 0.5vw;
+			min-width: 8vw;
+
+			option{
+
+			}
+		}
+	}
+	.sidebarShowing{
+		// display: none;
+		background-color: white;
+		position: relative;
+		text-align: center;
+
+		span{
+			font-size: 1.8vw;
+		}
+		.sidebarShowingTitle{
+			padding-top: 1vw;
+			display: block;
+
+		}
+		.sidebarShowingNum{
+			margin: 0vw 1vw;
+		}
+		.sidebarShowingButton{
+			display: inline-block;
+			font-size: 0;
+			background-color: $dGrey;
+			border: 0.1vw solid black;
+
+			.sidebarShowingArrow{
+				font-size: 2vw;
+			}
+		}
+		.sidebarShowingButton:hover{
+			cursor: pointer;
+		}
+		.sidebarShowingPrev{
+
+			.sidebarShowingArrow{
+				transform: rotate(-90deg) scaleY(0.5);
+			}
+		}
+		.sidebarShowingNext{
+
+			.sidebarShowingArrow{
+				transform: rotate(90deg) scaleY(0.5);
+			}
+		}
+	}
+	.sidebarConfirmBox{
+		display: none;
+		padding: 0.5vw 1vw;
+		background-color: white;
+
+		.sidebarConfirmButton{
+			background-color: $green;
+			text-align: center;
+			font-size: 1.3vw;
+			font-weight: bold;
+			border: 0.1vw solid black;
+			border-radius: 0.5vw;
+			padding: 0.3vw 0vw;
+			margin-bottom: 0.5vw;
+		}
+		.sidebarConfirmButton:hover{
+			cursor: pointer;
+		}
+		.sidebarConfirmMTButton{
+			background-color: $blue;
+		}
+		.sidebarConfirmCLButton{
+			
+		}
+		.sidebarConfirmRButton{
+			background-color: $dGrey;
+		}
+	}
+}
+
+/////////////////////////////////   RATE   ///////////////////////////////////////
+
+.rateBlackout{
+	display: none;
+	position: fixed;
+	z-index: 2;
+	height: 100vh;
+	width: 100vw;
+	background-color: rgba(#000,0.9);
+
+	.rateContent{
+		position: absolute;
+		top: 50%;
+		left: 35%;
+		transform: translate(-50%, -50%);
+		font-size: 1.5vw;
+		background-color: white;
+		border: 0.2vw solid $dGrey;
+		border-radius: 0.5vw;
+		max-height: 70%;
+		max-width: 70%;
+		padding: 1vw;
+		overflow: auto;
+
+	}
+	.rateRatingBox{
+		position: absolute;
+		top: 50%;
+		left: 85%;
+		transform: translate(-50%, -50%);
+		background-color: white;
+		border: 0.2vw solid $dGrey;
+		border-radius: 0.5vw;
+		padding: 3vw 1vw;
+
+		.rateRatingButton{
+			text-align: center;
+			font-size: 3vw;
+			border: 0.2vw solid black;
+			border-radius: 0.5vw;
+			padding: 0.2vw 1vw;
+		}
+		.rateRatingButton:hover{
+			cursor: pointer;
+		}
+		.rateRatingGreen{
+			background-color: $green;
+		}
+		.rateRatingBlue{
+			background-color: $blue;
+			margin: 1vw 0vw;
+		}
+		.rateRatingRed{
+			background-color: $red;
+		}
+	}
+}
+
+//////////////////////////   SIGN UP   ///////////////////////////////
+
+.signUpMessage{
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	text-align: center;
+	font-size: 4vw;
+}
+.signUpForm{
+	display: inline-block;
+	position: relative;
+	left: 50vw;
+	top: 50vh;
+	transform: translate(-50%, -50%);
+	background-color: white;
+	border: 0.3vw solid black;
+	border-radius: 0.5vw;
+	text-align: -webkit-center;
+	padding: 1vw;
+
+	input{
+		display: block;
+		font-size: 2vw;
+		margin-bottom: 1vw;
+		border: 0.2vw solid white;
+		border-bottom: 0.2vw solid black;
+	}
+	input:focus{
+		border: 0.2vw solid blue;
+	}
+	input[type=email]{
+
+	}
+	input[type=password]{
+
+	}
+	.signUpSubmit{
+		display: inline-block;
+		font-size: 2vw;
+		margin-bottom: 1vw;
+		padding: 0.5vw 1vw;
+		background-color: $green;
+		border: 0.2vw solid black;
+	}
+	.signUpSubmit:hover{
+		cursor: pointer;
+	}
+	.logInButton{
+		margin-right: 2vw;
+		background-color: $dGrey;
+	}
+}
