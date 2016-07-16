@@ -1,23 +1,12 @@
 var express = require('express');
 var router = express.Router();
-var connection = require('./connection');
-
+var index = require('./index');
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    res.render('index', {
+    res.render('view', {
         title: 'NullSpeak - View',
-        mainTopic: mainTopic
+        mainTopic: index.mainTopic
     });
 });
-
-connection.connect.connect();
-
-connection.connect.query("SELECT TOPIC FROM main_topic WHERE QUEUE_NUM='0'", function(err, rows, fields){
-    //if(err);
-
-    mainTopic = rows[0].TOPIC;
-});
-connection.connect.end();
-
 
 module.exports = router;
