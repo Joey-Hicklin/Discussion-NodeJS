@@ -5,17 +5,9 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var http = require('http');
-var sql = require('mysql');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
-
-var connection = sql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'discussion'
-});
+var viewPage = require('./routes/view');
 
 var app = express();
 
@@ -33,7 +25,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/users', users);
+// app.use('/view', viewPage);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -68,7 +60,5 @@ app.use(function(err, req, res, next) {
 
 
 module.exports = {
-  app: app,
-  connection: connection,
-  test: "test"
+  app: app
 };
