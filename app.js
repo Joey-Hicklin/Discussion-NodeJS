@@ -5,9 +5,17 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var http = require('http');
+var sql = require('mysql');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+
+var connection = sql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'discussion'
+});
 
 var app = express();
 
@@ -59,4 +67,8 @@ app.use(function(err, req, res, next) {
 });
 
 
-module.exports = app;
+module.exports = {
+  app: app,
+  connection: connection,
+  test: "test"
+};

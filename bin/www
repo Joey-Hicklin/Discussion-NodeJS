@@ -8,18 +8,19 @@ var app = require('../app');
 var debug = require('debug')('Discussion-NodeJS:server');
 var http = require('http');
 
+console.log(app.test);
+
 /**
  * Get port from environment and store in Express.
  */
-
 var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
+app.app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+var server = http.createServer(app.app);
 
 /**
  * Listen on provided port, on all network interfaces.
