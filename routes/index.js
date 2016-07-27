@@ -1,11 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var session = require('express-session');
-var sessionOptions = {
-  secret: 'N020dyL12t3n2',
-  resave: true,
-  saveUninitialized: false
-};
 var connection = require('./connection');
 
 /* GET home page. */
@@ -19,6 +13,15 @@ router.get('/', function(req, res, next) {
     title: 'NullSpeak - Main',
     mainTopic: mainTopic,
     test: req.session.test
+  });
+});
+
+router.get('/testRoutes', function(req,res,next){
+  // var test = req;
+  var test = [1,2,3];
+  res.render('testRoutes', {
+    title: 'NullSpeak - testRoutes',
+    test: test
   });
 });
 
