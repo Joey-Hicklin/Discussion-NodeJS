@@ -1,25 +1,21 @@
 var express = require('express');
+var jquery = require('jquery');
 var router = express.Router();
 var connection = require('./connection');
+var siteScripts = require('../views/js/script');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   
   // create loggedIn cookie
-  if(!req.cookie.loggedIn){
-    res.cookie(loggedIn , 0, {expire : new Date() + (86400*30)});
+  if(!req.cookies.loggedIn){
+    res.cookie("loggedIn" , 0, {expire : new Date() + (86400*30)});
   }
-  
-  
-  // if(!req.session.test){
-  //   req.session.test = "TESTING SESSIONS - Init";
-  // }else{
-  //   req.session.test = "TESTING SESSIONS - Remain";
-  // }
+
   res.render('index', {
     title: 'NullSpeak - Main',
     mainTopic: mainTopic,
-    test: req.cookie.loggedIn
+    test: req.cookies.loggedIn
   });
 });
 

@@ -9,6 +9,92 @@
   </head>
   <body>
 
+  <div id="toolbar"><!--
+		--><div class="mainTopicTimer timer"></div><!--
+		--><div class="postTimer timer"></div><!--
+		--><div class="rateTimer timer"></div><!--
+		--><div class="toolbarLogin tls">Log In</div><!--
+		--><div class="toolbarSignUp tls">Sign Up</div><!--
+		--><div id="mainLayer">MAIN</div><!--
+		--><div class="layerBox"><!--
+			--><div class="layerButton originalLayer">0</div><!-- 12 buttons MAX
+		--></div><!--
+		--><a class="optionsToolbar" href="#">OPTIONS</a>
+  </div><!--END OF toolbar DIV-->
+
+  <!--*******************   BLACKOUTS   ***************************  -->
+
+  <div class="loginBlackout blackout">
+    <div class="loginBox">
+      <form id="loginForm">
+        <input id="loginEmail" type="text" maxlength="50" size="30" placeholder="EMAIL" name="email" required>
+        <div class="passwordBox">
+          <input id="loginPass" type="password" maxlength="30" size="30" placeholder="PASSWORD" name="password" required>
+          <div class="loginForget">Forgot your password?</div>
+        </div><!--END OF passwordBox DIV-->
+        <div class="signError loginError"></div>
+        <div id="loginSubmit">Log In</div>
+      </form>
+    </div>
+  </div>
+
+  <div class="optionBlackout blackout">
+    <div class="optionBox">
+      <div class="optionButton signUpButton">Sign Up</div>
+      <div class="optionButton logInButton">Log In</div>
+      <div class="optionButton logOutButton">Log Out</div>
+    </div><!--END OF optionBox DIV-->
+  </div><!--END OF optionBlackout DIV-->
+
+  <div class="respondBlackout blackout">
+    <div class="respondTopicBox">
+      <div class="respondTopic"></div>
+    </div>
+    <div class="respondBox">
+      <span></span>
+      <div class="agreeButton respondInButton"><div class="viewNum viewNumA">8</div><div class="threeButtonText">AGREEMENT</div></div>
+      <div class="neutralButton respondInButton"><div class="viewNum viewNumN">8</div><div class="threeButtonText">NEUTRALITY</div></div>
+      <div class="disagreeButton respondInButton"><div class="viewNum viewNumD">8</div><div class="threeButtonText">DISAGREEMENT</div></div>
+    </div><!--END OF respondBox DIV-->
+  </div><!--END OF respondBlackout DIV-->
+
+  <div class="viewTopicBlackout blackout">
+    <div class="viewTopicBox blankView">
+      <div class="viewTopic"><%= mainTopic %></div>
+      <div class="reviewContent"></div>
+
+      <div class="submitPost">Submit Post</div>
+    </div><!--END OF viewTopicBox DIV-->
+  </div><!--END OF viewTopicBlackout DIV-->
+
+  <div class="layerBlackout blackout">
+    <div class="layerBox">
+      <div class="layerContent"></div>
+      <div class="layerNavBox">
+        <div class="layerNavPrev layerNavButton"><span>&#x25B2;</span></div>
+        <div class="layerNavGo layerNavButton">Go To Layer</div>
+        <div class="layerNavNext layerNavButton"><span>&#x25B2;</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="signUpBlackout blackout">
+    <form class="signUpForm" name="signUp">
+
+      <input required id="signEmail" type="email" maxlength="50" name="email" placeholder="EMAIL" />
+      <?php /*<input required type="tel" maxlength="12" name="phone" placeholder="PHONE NUMBER" /> */ ?>
+      <input required id="signPass" type="password" maxlength="30" name="password" placeholder="PASSWORD" />
+      <input required id="signPassVerify" type="password" maxlength="30" name="verifyPassword" placeholder="VERIFY PASSWORD" />
+      <div class="signError signErrorEmail"></div>
+      <div class="signError signErrorPass"></div>
+      <div class="signUpSubmit">Sign Up</div>
+    </form>
+  </div>
+
+  <!-- ************************   end of BLACKOUTS   *************************** -->
+
+  <script src="<%= siteScripts %>"></script>
+
   <div id="archiveNav">
     <div class="archiveButton archiveButtonLeft">&#8636;</div>
     <div class="archiveTitle">ARCHIVES</div>

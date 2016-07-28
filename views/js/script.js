@@ -1,3 +1,13 @@
+var $;
+require("jsdom").env("", function(err, window) {
+	if (err) {
+		console.error(err);
+		return;
+	}
+	$ = require("jquery")(window);
+	doSomething();
+});
+
 function statementRatingChange(ratingReturn, elementID, which){
 	$('#'+elementID).find('.statementRating:nth-child('+which+')').css({
 		"height":((ratingReturn[which]/ratingReturn[0])*100)+'%'

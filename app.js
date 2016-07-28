@@ -41,6 +41,10 @@ app.use(function(req, res, next) {
   next(err);
 });
 
+app.get('/cookie',function(req, res){
+  res.cookie(loggedIn , 0).send('Cookie is set');
+});
+
 // error handlers
 
 // development error handler
