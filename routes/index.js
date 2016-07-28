@@ -4,24 +4,22 @@ var connection = require('./connection');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  if(!req.session.test){
-    req.session.test = "TESTING SESSIONS - Init";
-  }else{
-    req.session.test = "TESTING SESSIONS - Remain";
+  
+  // create loggedIn cookie
+  if(!req.cookie.loggedIn){
+    res.cookie(loggedIn , 0, {expire : new Date() + (86400*30)});
   }
+  
+  
+  // if(!req.session.test){
+  //   req.session.test = "TESTING SESSIONS - Init";
+  // }else{
+  //   req.session.test = "TESTING SESSIONS - Remain";
+  // }
   res.render('index', {
     title: 'NullSpeak - Main',
     mainTopic: mainTopic,
-    test: req.session.test
-  });
-});
-
-router.get('/testRoutes', function(req,res,next){
-  // var test = req;
-  var test = [1,2,3];
-  res.render('testRoutes', {
-    title: 'NullSpeak - testRoutes',
-    test: test
+    test: req.cookie.loggedIn
   });
 });
 
