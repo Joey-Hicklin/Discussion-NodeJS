@@ -14,7 +14,7 @@ var http = require('http');
 var $ = require('jquery');
 
 
-// Routes
+// Route variables
 var mainPage = require('./routes/index');
 var viewPage = require('./routes/view');
 
@@ -36,6 +36,7 @@ app.use(cookieParser());
 app.use(session(sessionOptions));
 app.use(express.static(path.join(__dirname, 'public')));
 
+//Set page routes
 app.use('/', mainPage);
 app.use('/view', viewPage);
 
