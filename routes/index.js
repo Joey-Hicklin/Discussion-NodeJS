@@ -1,8 +1,4 @@
-var express = require('express');
-var jquery = require('jquery');
-var router = express.Router();
-var connection = require('./connection');
-var siteScripts = require('../views/js/script');
+require('../views/js/script');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {

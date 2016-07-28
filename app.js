@@ -11,14 +11,19 @@ var sessionOptions = {
 };
 var bodyParser = require('body-parser');
 var http = require('http');
+var $ = require('jquery');
 
+
+// Routes
 var mainPage = require('./routes/index');
 var viewPage = require('./routes/view');
 
+
+// Express Initialize
 var app = express();
 
 
-// view engine setup
+// View Engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
